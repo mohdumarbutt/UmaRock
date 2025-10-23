@@ -28,8 +28,9 @@ async function autoreadCommand(sock, chatId, message) {
                     forwardingScore: 1,
                     isForwarded: true,
                     forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363161513685998@newsletter',
-                        newsletterName: 'KnightBot MD',
+                        // TODO: Insert your channel JID here (format: 120363XXXXXXXXX@newsletter)
+                        newsletterJid: 'TODO_NEWSLETTER_JID',
+                        newsletterName: 'UmaRock',
                         serverMessageId: -1
                     }
                 }
@@ -59,8 +60,9 @@ async function autoreadCommand(sock, chatId, message) {
                         forwardingScore: 1,
                         isForwarded: true,
                         forwardedNewsletterMessageInfo: {
-                            newsletterJid: '120363161513685998@newsletter',
-                            newsletterName: 'KnightBot MD',
+                            // TODO: Insert your channel JID here (format: 120363XXXXXXXXX@newsletter)
+                            newsletterJid: 'TODO_NEWSLETTER_JID',
+                            newsletterName: 'UmaRock',
                             serverMessageId: -1
                         }
                     }
@@ -82,8 +84,9 @@ async function autoreadCommand(sock, chatId, message) {
                 forwardingScore: 1,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363161513685998@newsletter',
-                    newsletterName: 'KnightBot MD',
+                    // TODO: Insert your channel JID here (format: 120363XXXXXXXXX@newsletter)
+                    newsletterJid: 'TODO_NEWSLETTER_JID',
+                    newsletterName: 'UmaRock',
                     serverMessageId: -1
                 }
             }
@@ -97,8 +100,9 @@ async function autoreadCommand(sock, chatId, message) {
                 forwardingScore: 1,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363161513685998@newsletter',
-                    newsletterName: 'KnightBot MD',
+                    // TODO: Insert your channel JID here (format: 120363XXXXXXXXX@newsletter)
+                    newsletterJid: 'TODO_NEWSLETTER_JID',
+                    newsletterName: 'UmaRock',
                     serverMessageId: -1
                 }
             }
@@ -152,7 +156,7 @@ function isBotMentionedInMessage(message, botNumber) {
         }
         
         // Check for bot name mentions (optional, can be customized)
-        const botNames = [global.botname?.toLowerCase(), 'bot', 'knight', 'knight bot'];
+        const botNames = [global.botname?.toLowerCase(), 'bot', 'umarock', 'umarock bot'];
         const words = textContent.toLowerCase().split(/\s+/);
         if (botNames.some(name => words.includes(name))) {
             return true;

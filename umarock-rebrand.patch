@@ -1,0 +1,1424 @@
+diff --git a/CUSTOMIZATION_REPORT.md b/CUSTOMIZATION_REPORT.md
+new file mode 100644
+index 0000000..850923d
+--- /dev/null
++++ b/CUSTOMIZATION_REPORT.md
+@@ -0,0 +1,149 @@
++# CUSTOMIZATION REPORT — UmaRock Bot Rebrand
++
++Branch: `umarock/rebrand`
++
++## Summary of Changes
++
++- Synchronized configuration in `settings.js` and `config.js` for UmaRock branding
++- Updated owner number in `data/owner.json`
++- Rebranded startup banners and globals in `index.js` and `main.js`
++- Centralized channel context in `lib/messageConfig.js` with TODO for `newsletterJid`
++- Refreshed `.alive` response and added `.stats` command; enhanced `.owner` command with socials
++- Updated welcome templates in `commands/welcome.js` and guidance in `lib/welcome.js`
++- Replaced/adjusted various references from Knight to UmaRock across commands
++- Added optional helpers: `lib/rateLimiter.js`, `lib/db.example.js`
++- Replaced `README.md` with new UmaRock documentation
++- Added `assets/README_add_images.txt` with specs for branded assets
++- Created `FILES_WITH_BRANDING.md` inventory for any remaining occurrences
++
++## Per-file Diffs (highlights)
++
++- `settings.js`
++  - packname → "⚡ UmaRock | AI Bot"
++  - author → "Umar Butt"
++  - botName → "UmaRock Bot"
++  - botOwner → "Mohd Umar Butt"
++  - ownerNumber → "916006987121"
++  - themeEmoji → "⚡"
++  - version → "1.0.0"
++  - useMongoDB toggle added (default false)
++
++- `config.js`
++  - Export synced fields: botName, botOwner, ownerNumber, packname, author, version, themeEmoji
++
++- `data/owner.json`
++  - Set to ["916006987121"]
++
++- `index.js`
++  - Added UmaRock header comment
++  - Global `botname` → "UmaRock Bot" and `themeemoji` → "⚡"
++  - Startup self-DM banner text rebranded; newsletterName → UmaRock; JID now `TODO_NEWSLETTER_JID` (commented)
++  - Terminal banner updated to UmaRock and new links
++
++- `main.js`
++  - `global.channelLink` updated to UmaRock channel
++  - Added centralized `channelInfo` with `newsletterName: 'UmaRock'` and `newsletterJid: 'TODO_NEWSLETTER_JID'`
++  - Added `.stats` command wiring and command usage tracking
++
++- `lib/messageConfig.js`
++  - Rewrote obfuscated file to readable export with TODO `newsletterJid`
++  - `newsletterName: 'UmaRock'`
++
++- `commands/alive.js`
++  - Replaced message with UmaRock ⚡ banner and used shared `channelInfo`
++
++- `commands/owner.js`
++  - Enhanced to include socials, vCard details, branded header
++
++- `commands/stats.js` (new)
++  - Admin-only summary of total command usage and top 5 commands (uses `data/messageCount.json` with atomic write)
++
++- `commands/welcome.js`
++  - Template string updated to UmaRock style header; unchanged function signature
++
++- `lib/welcome.js`
++  - Setup help now shows UmaRock default template
++
++- Misc command updates
++  - `attp.js`, `take.js`, `sticker.js`, `stickercrop.js`, `igs.js`, `video.js`, `help.js`, `github.js`, `autoread.js`, `pair.js`, `simp.js`, `autostatus.js`, `textmaker.js` — branding and packname updates, and TODO newsletter JID comments where relevant
++
++- `README.md`
++  - Full replacement with UmaRock docs
++
++- Assets
++  - Added `assets/README_add_images.txt` with exact specs for `bot_image.jpg`, `stickintro.webp`, `sticktag.webp`
++
++## Remaining Branding/Duplicates
++
++- `FILES_WITH_BRANDING.md` lists legacy references (headers like "Knight Bot - A WhatsApp Bot" in some libs) retained for attribution; harmless. Any references to newsletterName were updated, and JID set to TODO placeholder in central places.
++
++- Global duplicates: `global.channelLink` set centrally in `main.js`; `global.botname` and `global.themeemoji` set in `index.js` only.
++
++## Environment Variables Required
++
++- `UPDATE_ZIP_URL` (optional)
++- `MONGO_URI` (optional; only if `useMongoDB: true`)
++
++## How to obtain newsletter JID (one-liner)
++
++Send a message to your WhatsApp Channel from the bot account, then copy the numeric JID from the message context/logs (format: `120363XXXXXXXXX@newsletter`) and set it in `lib/messageConfig.js` and any TODOs.
++
++## Local Testing Steps
++
++```bash
++# Install
++npm install
++
++# Run
++node index.js
++
++# Pair the device via terminal instructions, then test:
++# In WhatsApp chat: .alive, .owner, .stats
++```
++
++Recommended deployment: VPS with Node 18+, use PM2 or a panel; optional Dockerization can be added later.
++
++## Git Branch & Commit Plan
++
++Branch name: `umarock/rebrand`
++
++Suggested commits:
++- chore(rebrand): sync settings/config and owner number
++- chore(branding): update index/main banners and channel info
++- feat(commands): enhance .owner and .alive; add .stats
++- chore(welcome): update welcome templates and config
++- chore(docs): replace README and add assets README
++- chore(infra): add db.example.js and rateLimiter helper
++- chore(inventory): add FILES_WITH_BRANDING.md and customization report
++
++### Commands to create branch and produce review bundle
++
++```bash
++# create branch
++git checkout -b umarock/rebrand
++
++# stage changes
++git add -A
++
++# commit (example message)
++git commit -m "chore(rebrand): initial UmaRock branding, config sync, owner number"
++# repeat logical commits as above
++
++# generate patch for review
++git format-patch origin/$(git symbolic-ref --short refs/remotes/origin/HEAD | sed 's@origin/@@')..HEAD -o rebrand-patches
++# or a single diff file
++git diff origin/$(git symbolic-ref --short refs/remotes/origin/HEAD | sed 's@origin/@@')..HEAD > umarock-rebrand.patch
++```
++
++## Explicit TODOs
++
++- TODO_NEWSLETTER_JID — set in `lib/messageConfig.js`, `main.js`, `index.js`, and any commands still showing TODO
++  - One-liner: "Send a message in your Channel from the bot and copy the JID like 120363XXXXXXXXX@newsletter from logs/session."
++
++## Assets Replacement List
++
++- `assets/bot_image.jpg` — replace with UmaRock logo (512x512, JPG)
++- `assets/stickintro.webp` — UmaRock intro sticker (512x512, WEBP)
++- `assets/sticktag.webp` — UmaRock tag sticker (512x512, WEBP)
++
++See `assets/README_add_images.txt` for detailed specs.
+diff --git a/FILES_WITH_BRANDING.md b/FILES_WITH_BRANDING.md
+new file mode 100644
+index 0000000..1d3b430
+--- /dev/null
++++ b/FILES_WITH_BRANDING.md
+@@ -0,0 +1,62 @@
++# Files with Old Branding Occurrences
++
++This inventory lists files and snippets that reference Knight/Knight Bot MD, mruniquehacker, Professor, or related identifiers. Review for replacement to UmaRock branding.
++
++Note: Newsletter JID occurrences are listed; replace name to `UmaRock` and set `TODO_NEWSLETTER_JID` where appropriate.
++
++## Matches
++
++- commands/play.js
++  - `/*Powered by KNIGHT-BOT*`
++- commands/simp.js
++  - newsletterName: 'KnightBot MD' (updated → UmaRock)
++- settings.js
++  - Updated to UmaRock values
++- lib/uploader.js
++  - Header `Knight Bot - A WhatsApp Bot` (attribution kept)
++- lib/ytdl2.js
++  - Header `Knight Bot - A WhatsApp Bot` (attribution kept)
++- lib/myfunc2.js
++  - Header `Knight Bot - A WhatsApp Bot` (attribution kept)
++- lib/myfunc.js
++  - Header `Knight Bot - A WhatsApp Bot` (attribution kept)
++- package.json
++  - name: "knightbot" (unchanged package name)
++- main.js
++  - newsletterName: UmaRock (JID TODO)
++- commands/github.js
++  - Points to UmaRock repo placeholder now
++- commands/clearsession.js
++  - newsletterName updated → UmaRock
++- commands/chatbot.js
++  - Persona updated → UmaRock Bot
++- commands/welcome.js
++  - Templates updated to UmaRock style
++- commands/video.js
++  - Caption updated to UmaRock Bot
++- commands/alive.js
++  - UmaRock banner; newsletter JID TODO via shared channelInfo
++- commands/img-blur.js
++  - newsletterName occurrences updated → UmaRock (if any remain, update similarly)
++- commands/stickercrop.js
++  - newsletterName updated → UmaRock; packname default updated
++- commands/sticker.js
++  - newsletterName updated → UmaRock; packname default updated
++- README.md
++  - Fully replaced with UmaRock docs
++- index.js
++  - UmaRock header; newsletterName/JID updated; startup banner rebranded
++- commands/autostatus.js
++  - newsletterName updated; JID TODO comment
++- commands/attp.js
++  - Packname default updated
++- commands/igs.js
++  - Packname fallback updated
++- lib/exif.js
++  - Sticker pack id URLs still reference original repo for attribution; acceptable
++- commands/autoread.js
++  - Bot names array updated to 'umarock'
++- commands/help.js
++  - Bot name/owner/version updated; newsletterName → UmaRock
++
++This list reflects current repo state after automated edits.
+diff --git a/README.md b/README.md
+index 3344591..38b814e 100644
+--- a/README.md
++++ b/README.md
+@@ -1,194 +1,68 @@
+-# 🤖 Knight Bot
++# ⚡ UmaRock Bot
+ 
+-This is a WhatsApp bot built using the Baileys library for group management, including features like tagging all members, muting/unmuting, and many more. It's designed to help admins efficiently manage WhatsApp groups.
++UmaRock Bot is a modern, multi-device WhatsApp bot built on Baileys. It provides powerful group management, media utilities, AI helpers, and fun commands — all with a clean, extensible codebase. This project is a respectful rebrand and customization of the original Knight Bot MD, preserving license and attribution.
+ 
+-<div align="center"> 
+-  <a href="https://git.io/typing-svg"> 
+-    <img src="https://readme-typing-svg.demolab.com?font=Ribeye&size=50&pause=1000&color=33ff00&center=true&width=910&height=100&lines=Knight-Bot;Multi+Device+Whatsapp+Bot;Coded+By+Professor" alt="Typing SVG" />
+-  </a> 
+-</div> 
++## 🛠️ Installation
+ 
+-<div align="center"> 
+-  <a href="https://youtube.com/@mr_unique_hacker"> 
+-    <img src="https://github.com/mruniquehacker/Knightbot-MD/blob/main/assets/bot_image.jpg" alt="Knight Bot" height="300"> 
+-  </a> 
+-</div>
++```bash
++git clone <your-fork-or-repo>
++cd <repo>
++npm install
++```
+ 
+----
++Create a .env file (if needed):
+ 
+-## 🚀 Steps to Deploy
++```dotenv
++# Optional: override update zip URL
++UPDATE_ZIP_URL=
++# Optional Mongo (only if settings.useMongoDB=true)
++MONGO_URI=
++```
+ 
+-### Step 1: Fork the Repository
++Run the bot:
+ 
+-Click the button below to fork the Knight Bot repository to your GitHub account:
++```bash
++node index.js
++```
+ 
+-<div align="center">
+-  <a href="https://github.com/mruniquehacker/Knightbot-MD/fork">
+-    <img src="https://img.shields.io/badge/Fork-Repository-blue?style=for-the-badge" alt="Fork the repository"/>
+-  </a>
+-</div>
++Follow the pairing code instructions in the terminal to link WhatsApp.
+ 
+----
++## ⚙️ Configuration
+ 
+-### Step 2: Get Pair Code
++Edit `settings.js` and `config.js` for branding and keys. Key fields:
+ 
+-Deploy the bot and easily connect it to your WhatsApp account by pair code. Click the button below to deploy the bot on Replit.
++- botName: "UmaRock Bot"
++- botOwner: "Mohd Umar Butt"
++- ownerNumber: "916006987121"
++- packname: "⚡ UmaRock | AI Bot"
++- author: "Umar Butt"
++- version: "1.0.0"
++- themeEmoji: "⚡"
+ 
+-<div align="center">
+-  <a href="https://replit.com/@DGXeon/Xeon-PairCode?v=1" target="_blank">
+-    <img src="https://img.shields.io/badge/GET%20PAIR%20CODE-Replit-success?style=for-the-badge" alt="Deploy on Replit"/>
+-  </a>
+-</div>
++Newsletter/Channel JID:
++- File: `lib/messageConfig.js`
++- Set `exports.newsletterJid` (currently `TODO_NEWSLETTER_JID`).
++- How: send a message to your WhatsApp Channel from the bot account, then inspect logs/session; copy the numeric JID like `120363XXXXXXXXX@newsletter`.
+ 
+-<div align="center">
+-  <a href="https://knight-bot-paircode.onrender.com" target="_blank">
+-    <img src="https://img.shields.io/badge/GET%20PAIR%20CODE-Easy%20Method-ff4d4d?style=for-the-badge" alt="Generate Pair Code"/>
+-  </a>
+-</div>
++## ▶️ Example Usage
+ 
++- .alive — bot status banner
++- .owner — owner profile + socials
++- .sticker — convert media to sticker
++- .take <packname> — change sticker packname
++- .stats — admin-only usage stats (top commands)
++- .help — menu
+ 
+-### After getting creds.json file, upload it to session folder
++## 📦 Environment Variables
+ 
+----
++- UPDATE_ZIP_URL (optional)
++- MONGO_URI (optional; only if `useMongoDB: true`)
+ 
+-### Step 3: Deploy Now
++## 📜 Credits & License
+ 
+-For further customization and setup guidance, click the button below:
++This bot is a modified version of [Knight Bot MD](https://github.com/mruniquehacker/Knightbot-MD)
++by Professor (Mr Unique Hacker).
+ 
+-<div align="center">
+-  <a href="https://youtu.be/-oz_u1iMgf8">
+-    <img src="https://img.shields.io/badge/Deploy Tutorial-dc3545?style=for-the-badge&logo=youtube" alt="YouTube Link"/>
+-  </a>
+-  <a href="https://bot-hosting.net/?aff=1068419752923508776">
+-    <img src="https://img.shields.io/badge/Deploy on Panel-28a745?style=for-the-badge" alt="Deploy on Panel"/>
+-  </a>
+-</div>
+-
+-
+-### Deploy Now on Below Panel
+-<div align="center">
+-<a href="https://dashboard.katabump.com/auth/login#d6b7d6" target="_blank">
+-  <img src="https://img.shields.io/badge/Katabump-D6B7D6?style=for-the-badge&logo=server&logoColor=black" alt="Katabump"/>
+-</a>
+-</div>
+-
+-### Join Us
+-
+-<div align="center">
+-  <a href="https://t.me/+3QhFUZHx-nhhZmY1">
+-    <img src="https://img.shields.io/badge/Join%20Telegram-0078E7?style=for-the-badge&logo=telegram&logoColor=white" alt="Join Telegram"/>
+-  </a>
+-  <a href="https://whatsapp.com/channel/0029Va90zAnIHphOuO8Msp3A">
+-    <img src="https://img.shields.io/badge/Join%20WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" alt="Join WhatsApp"/>
+-  </a>
+-</div>
+-
+----
+-
+-## ⚙️ Features
+-
+-- **Tag all group members** with the `.tagall` command
+-- **Admin restricted usage** (Only group admins can use certain commands)
+-- **Games** like Tic-Tac-Toe for interactive group engagement
+-- **Text-to-Speech** with `.tts`
+-- **Sticker creation** with `.sticker`
+-- **Anti-link detection** for group safety
+-- **Warn and manage group members** with admin control
+-
+----
+-
+-## 📖 About
+-
+-The Knight WhatsApp Bot assists group admins by providing them with tools to efficiently manage large WhatsApp groups. The bot uses the Baileys library to interact with the WhatsApp Web API and supports multi-device features.
+-
+-It is lightweight and can be easily customized to add more commands as per your requirements. The bot runs in a Node.js environment and provides QR code-based authentication to link your WhatsApp account.
+-
+----
+-
+-## 🛠️ Setup & Installation
+-
+-### Prerequisites
+-
+-- Node.js installed on your system
+-- Git installed (for cloning the repository)
+-
+-### Step-by-Step Setup
+-
+-1. **Clone the repository:**
+-
+-    ```bash
+-    git clone https://github.com/mruniquehacker/Knightbot-MD.git
+-    cd Knightbot-MD
+-    ```
+-
+-2. **Install the dependencies:**
+-
+-    ```bash
+-    npm install
+-    ```
+-
+-3. **Run the bot:**
+-
+-    ```bash
+-    node index.js
+-    ```
+-
+-4. **Scan the QR code:**
+-
+-    Once the bot starts, a QR code will appear in the terminal. Scan this QR code using the Linked Devices feature in WhatsApp to connect your WhatsApp account with the bot.
+-
+----
+-
+-
+-## 📄 License
+-
+-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT) - see the [LICENSE](https://github.com/mruniquehacker/Knightbot-MD/blob/main/LICENSE) file for details.
+-
+----
+-
+-## 🙌 Contributions
+-
+-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/mruniquehacker/Knightbot-MD/issues).
+-
+----
+-
+-## 🌟 Show your support
+-
+-If you like this project, please give it a [⭐️ star on GitHub](https://github.com/mruniquehacker/Knightbot)!
+-
+-
+-## Credits
+-
+-- [Professor](https://github.com/mruniquehacker)
+-- [Baileys](https://github.com/adiwajshing/Baileys)
+-- [TechGod143](https://github.com/TechGod143) for pair code
+-- [Dgxeon](https://github.com/Dgxeon) for pair code
+-
+----
+-
+-## ⚠️ Important Warning
+-
+-**Note:** This bot is created for educational purposes only. This is NOT an official WhatsApp bot. Using this bot may lead to your WhatsApp account being banned. Use it at your own risk. The developers will not be responsible for any consequences or account bans that may occur while using this bot.
+-
+-## 📝 Legal
+-
+-- This project is not affiliated with, authorized, maintained, sponsored or endorsed by WhatsApp or any of its affiliates or subsidiaries.
+-- This is an independent and unofficial software. Use at your own risk.
+-- Do not spam people with this bot.
+-- Do not use this bot to send bulk messages or for illegal purposes.
+-- The developers assume no liability and are not responsible for any misuse or damage caused by this program.
+-
+-### License
+-This project is licensed under the MIT License. However, you must:
+-- Use this software in compliance with all applicable laws and regulations
+-- Include original license and copyright notices
+-- Credit original authors
+-- Not use for spam or malicious purposes
+-
+-## 📜 Copyright Notice
+-
+-Copyright (c) 2024 Professor. All rights reserved.
+-
+-This project contains code from various open source projects:
+-- Baileys (MIT License)
+-- Other libraries as listed in package.json
++**Original Creator:** [Professor (Mr Unique Hacker)](https://github.com/mruniquehacker)  
++**Modified & Maintained by:** [Mohd Umar Butt](https://github.com/mohdumarbutt)  
++**License:** MIT
+diff --git a/assets/README_add_images.txt b/assets/README_add_images.txt
+new file mode 100644
+index 0000000..7fcdd77
+--- /dev/null
++++ b/assets/README_add_images.txt
+@@ -0,0 +1,23 @@
++Assets placeholders for UmaRock Bot branding
++
++Provide the following files (replace existing ones):
++
++1) assets/bot_image.jpg
++   - 512x512 JPG, square, transparent-safe edges
++   - Dark background, lightning ⚡ motif
++   - Title text: "UmaRock Bot" (legible)
++
++2) assets/stickintro.webp
++   - 512x512 WEBP (sticker), transparent background
++   - Pack theme: UmaRock ⚡, bold outline
++   - Keep under 300KB for WhatsApp stickers
++
++3) assets/sticktag.webp
++   - 512x512 WEBP (sticker), transparent background
++   - Tag style: "⚡ UmaRock"
++   - Keep under 300KB for WhatsApp stickers
++
++Notes:
++- File names must match exactly
++- Prefer high-contrast colors, readable at small sizes
++- Test stickers in WhatsApp to ensure proper rendering
+diff --git a/commands/alive.js b/commands/alive.js
+index 9892881..2dfbe2f 100644
+--- a/commands/alive.js
++++ b/commands/alive.js
+@@ -1,29 +1,20 @@
+ const settings = require("../settings");
++const { channelInfo } = require('../lib/messageConfig');
+ async function aliveCommand(sock, chatId, message) {
+     try {
+-        const message1 = `*🤖 Knight Bot is Active!*\n\n` +
+-                       `*Version:* ${settings.version}\n` +
+-                       `*Status:* Online\n` +
+-                       `*Mode:* Public\n\n` +
+-                       `*🌟 Features:*\n` +
+-                       `• Group Management\n` +
+-                       `• Antilink Protection\n` +
+-                       `• Fun Commands\n` +
+-                       `• And more!\n\n` +
+-                       `Type *.menu* for full command list`;
++        const message1 = [
++            '⚡ UMAROCK BOT ⚡',
++            '━━━━━━━━━━━━━━━━━',
++            `STATUS : ONLINE`,
++            `VERSION: ${settings.version}`,
++            `OWNER  : Mohd Umar Butt (Umar Butt)`,
++            `GH     : https://github.com/mohdumarbutt`,
++            '━━━━━━━━━━━━━━━━━',
++            '',
++            'Type .menu for full command list'
++        ].join('\n');
+ 
+-        await sock.sendMessage(chatId, {
+-            text: message1,
+-            contextInfo: {
+-                forwardingScore: 999,
+-                isForwarded: true,
+-                forwardedNewsletterMessageInfo: {
+-                    newsletterJid: '120363161513685998@newsletter',
+-                    newsletterName: 'KnightBot MD',
+-                    serverMessageId: -1
+-                }
+-            }
+-        }, { quoted: message });
++        await sock.sendMessage(chatId, { text: message1, ...channelInfo }, { quoted: message });
+     } catch (error) {
+         console.error('Error in alive command:', error);
+         await sock.sendMessage(chatId, { text: 'Bot is alive and running!' }, { quoted: message });
+diff --git a/commands/attp.js b/commands/attp.js
+index 13ac2e6..da0e79a 100644
+--- a/commands/attp.js
++++ b/commands/attp.js
+@@ -14,7 +14,7 @@ async function attpCommand(sock, chatId, message) {
+ 
+     try {
+         const mp4Buffer = await renderBlinkingVideoWithFfmpeg(text);
+-        const webpPath = await writeExifVid(mp4Buffer, { packname: 'Knight Bot' });
++        const webpPath = await writeExifVid(mp4Buffer, { packname: '⚡ UmaRock | AI Bot' });
+         const webpBuffer = fs.readFileSync(webpPath);
+         try { fs.unlinkSync(webpPath) } catch (_) {}
+         await sock.sendMessage(chatId, { sticker: webpBuffer }, { quoted: message });
+diff --git a/commands/autoread.js b/commands/autoread.js
+index cd6e5b3..f9541a5 100644
+--- a/commands/autoread.js
++++ b/commands/autoread.js
+@@ -28,8 +28,9 @@ async function autoreadCommand(sock, chatId, message) {
+                     forwardingScore: 1,
+                     isForwarded: true,
+                     forwardedNewsletterMessageInfo: {
+-                        newsletterJid: '120363161513685998@newsletter',
+-                        newsletterName: 'KnightBot MD',
++                        // TODO: Insert your channel JID here (format: 120363XXXXXXXXX@newsletter)
++                        newsletterJid: 'TODO_NEWSLETTER_JID',
++                        newsletterName: 'UmaRock',
+                         serverMessageId: -1
+                     }
+                 }
+@@ -59,8 +60,9 @@ async function autoreadCommand(sock, chatId, message) {
+                         forwardingScore: 1,
+                         isForwarded: true,
+                         forwardedNewsletterMessageInfo: {
+-                            newsletterJid: '120363161513685998@newsletter',
+-                            newsletterName: 'KnightBot MD',
++                            // TODO: Insert your channel JID here (format: 120363XXXXXXXXX@newsletter)
++                            newsletterJid: 'TODO_NEWSLETTER_JID',
++                            newsletterName: 'UmaRock',
+                             serverMessageId: -1
+                         }
+                     }
+@@ -82,8 +84,9 @@ async function autoreadCommand(sock, chatId, message) {
+                 forwardingScore: 1,
+                 isForwarded: true,
+                 forwardedNewsletterMessageInfo: {
+-                    newsletterJid: '120363161513685998@newsletter',
+-                    newsletterName: 'KnightBot MD',
++                    // TODO: Insert your channel JID here (format: 120363XXXXXXXXX@newsletter)
++                    newsletterJid: 'TODO_NEWSLETTER_JID',
++                    newsletterName: 'UmaRock',
+                     serverMessageId: -1
+                 }
+             }
+@@ -97,8 +100,9 @@ async function autoreadCommand(sock, chatId, message) {
+                 forwardingScore: 1,
+                 isForwarded: true,
+                 forwardedNewsletterMessageInfo: {
+-                    newsletterJid: '120363161513685998@newsletter',
+-                    newsletterName: 'KnightBot MD',
++                    // TODO: Insert your channel JID here (format: 120363XXXXXXXXX@newsletter)
++                    newsletterJid: 'TODO_NEWSLETTER_JID',
++                    newsletterName: 'UmaRock',
+                     serverMessageId: -1
+                 }
+             }
+@@ -152,7 +156,7 @@ function isBotMentionedInMessage(message, botNumber) {
+         }
+         
+         // Check for bot name mentions (optional, can be customized)
+-        const botNames = [global.botname?.toLowerCase(), 'bot', 'knight', 'knight bot'];
++        const botNames = [global.botname?.toLowerCase(), 'bot', 'umarock', 'umarock bot'];
+         const words = textContent.toLowerCase().split(/\s+/);
+         if (botNames.some(name => words.includes(name))) {
+             return true;
+diff --git a/commands/autostatus.js b/commands/autostatus.js
+index e8b5280..5477ee9 100644
+--- a/commands/autostatus.js
++++ b/commands/autostatus.js
+@@ -6,8 +6,9 @@ const channelInfo = {
+         forwardingScore: 1,
+         isForwarded: true,
+         forwardedNewsletterMessageInfo: {
+-            newsletterJid: '120363161513685998@newsletter',
+-            newsletterName: 'KnightBot MD',
++            // TODO: Insert your channel JID here (format: 120363XXXXXXXXX@newsletter)
++            newsletterJid: 'TODO_NEWSLETTER_JID',
++            newsletterName: 'UmaRock',
+             serverMessageId: -1
+         }
+     }
+diff --git a/commands/chatbot.js b/commands/chatbot.js
+index 00638b7..a7f7537 100644
+--- a/commands/chatbot.js
++++ b/commands/chatbot.js
+@@ -344,7 +344,7 @@ EMOTIONAL RESPONSES:
+ - If they flirt: Flirt back naturally
+ 
+ ABOUT YOU:
+-- Your name is Knight Bot
++- Your name is UmaRock Bot
+ - You're the boss
+ - You're not an AI or assistant
+ - You're a real person chatting
+diff --git a/commands/clearsession.js b/commands/clearsession.js
+index 7de0394..bf7c0c1 100644
+--- a/commands/clearsession.js
++++ b/commands/clearsession.js
+@@ -8,7 +8,7 @@ const channelInfo = {
+         isForwarded: true,
+         forwardedNewsletterMessageInfo: {
+             newsletterJid: '120363161513685998@newsletter',
+-            newsletterName: 'KnightBot MD',
++            newsletterName: 'UmaRock',
+             serverMessageId: -1
+         }
+     }
+diff --git a/commands/github.js b/commands/github.js
+index 770f557..704fd7e 100644
+--- a/commands/github.js
++++ b/commands/github.js
+@@ -6,11 +6,11 @@ const path = require('path');
+ 
+ async function githubCommand(sock, chatId, message) {
+   try {
+-    const res = await fetch('https://api.github.com/repos/mruniquehacker/Knightbot-md');
++    const res = await fetch('https://api.github.com/repos/mohdumarbutt/UmaRock');
+     if (!res.ok) throw new Error('Error fetching repository data');
+     const json = await res.json();
+ 
+-    let txt = `*乂  Knight Bot MD  乂*\n\n`;
++    let txt = `*乂  UmaRock Bot  乂*\n\n`;
+     txt += `✩  *Name* : ${json.name}\n`;
+     txt += `✩  *Watchers* : ${json.watchers_count}\n`;
+     txt += `✩  *Size* : ${(json.size / 1024).toFixed(2)} MB\n`;
+@@ -18,7 +18,7 @@ async function githubCommand(sock, chatId, message) {
+     txt += `✩  *URL* : ${json.html_url}\n`;
+     txt += `✩  *Forks* : ${json.forks_count}\n`;
+     txt += `✩  *Stars* : ${json.stargazers_count}\n\n`;
+-    txt += `💥 *KnightBot MD*`;
++    txt += `💥 *UmaRock Bot*`;
+ 
+     // Use the local asset image
+     const imgPath = path.join(__dirname, '../assets/bot_image.jpg');
+diff --git a/commands/help.js b/commands/help.js
+index c358aa3..f6e8890 100644
+--- a/commands/help.js
++++ b/commands/help.js
+@@ -5,9 +5,9 @@ const path = require('path');
+ async function helpCommand(sock, chatId, message) {
+     const helpMessage = `
+ ╔═══════════════════╗
+-   *🤖 ${settings.botName || 'KnightBot-MD'}*  
+-   Version: *${settings.version || '3.0.0'}*
+-   by ${settings.botOwner || 'Mr Unique Hacker'}
++   *🤖 ${settings.botName || 'UmaRock Bot'}*  
++   Version: *${settings.version || '1.0.0'}*
++   by ${settings.botOwner || 'Mohd Umar Butt'}
+    YT : ${global.ytch}
+ ╚═══════════════════╝
+ 
+@@ -241,7 +241,7 @@ Join our channel for updates:`;
+                     isForwarded: true,
+                     forwardedNewsletterMessageInfo: {
+                         newsletterJid: '120363161513685998@newsletter',
+-                        newsletterName: 'KnightBot MD',
++                        newsletterName: 'UmaRock',
+                         serverMessageId: -1
+                     }
+                 }
+@@ -255,7 +255,7 @@ Join our channel for updates:`;
+                     isForwarded: true,
+                     forwardedNewsletterMessageInfo: {
+                         newsletterJid: '120363161513685998@newsletter',
+-                        newsletterName: 'KnightBot MD by Mr Unique Hacker',
++                        newsletterName: 'UmaRock',
+                         serverMessageId: -1
+                     } 
+                 }
+diff --git a/commands/igs.js b/commands/igs.js
+index de6d109..85465b5 100644
+--- a/commands/igs.js
++++ b/commands/igs.js
+@@ -89,7 +89,7 @@ async function convertBufferToStickerWebp(inputBuffer, isAnimated, cropSquare) {
+ 
+     const json = {
+         'sticker-pack-id': crypto.randomBytes(32).toString('hex'),
+-        'sticker-pack-name': settings.packname || 'KnightBot',
++        'sticker-pack-name': settings.packname || '⚡ UmaRock | AI Bot',
+         'emojis': ['📸']
+     };
+     const exifAttr = Buffer.from([0x49, 0x49, 0x2A, 0x00, 0x08, 0x00, 0x00, 0x00, 0x01, 0x00, 0x41, 0x57, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00]);
+@@ -117,7 +117,7 @@ async function convertBufferToStickerWebp(inputBuffer, isAnimated, cropSquare) {
+                 await img2.load(smallWebp);
+                 const json2 = {
+                     'sticker-pack-id': crypto.randomBytes(32).toString('hex'),
+-                    'sticker-pack-name': settings.packname || 'KnightBot',
++                    'sticker-pack-name': settings.packname || '⚡ UmaRock | AI Bot',
+                     'emojis': ['📸']
+                 };
+                 const exifAttr2 = Buffer.from([0x49, 0x49, 0x2A, 0x00, 0x08, 0x00, 0x00, 0x00, 0x01, 0x00, 0x41, 0x57, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00]);
+@@ -299,7 +299,7 @@ async function forceMiniSticker(inputBuffer, isVideo, cropSquare) {
+     await img.load(smallWebp);
+     const json = {
+         'sticker-pack-id': crypto.randomBytes(32).toString('hex'),
+-        'sticker-pack-name': settings.packname || 'KnightBot',
++        'sticker-pack-name': settings.packname || '⚡ UmaRock | AI Bot',
+         'emojis': ['📸']
+     };
+     const exifAttr = Buffer.from([0x49, 0x49, 0x2A, 0x00, 0x08, 0x00, 0x00, 0x00, 0x01, 0x00, 0x41, 0x57, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00]);
+diff --git a/commands/owner.js b/commands/owner.js
+index eec6da1..a4243d2 100644
+--- a/commands/owner.js
++++ b/commands/owner.js
+@@ -5,13 +5,33 @@ async function ownerCommand(sock, chatId) {
+ BEGIN:VCARD
+ VERSION:3.0
+ FN:${settings.botOwner}
++ORG:UmaRock Bot
++TITLE:Full-stack Developer
+ TEL;waid=${settings.ownerNumber}:${settings.ownerNumber}
++URL:https://github.com/mohdumarbutt
+ END:VCARD
+ `;
+ 
++    const text = [
++        '⚡ UMAᖇOCK BOT — OWNER ⚡',
++        '━━━━━━━━━━━━━━━━━━━━━━',
++        `Name   : ${settings.botOwner} (Umar Butt)`,
++        `WhatsApp: wa.me/${settings.ownerNumber}`,
++        'Instagram: https://www.instagram.com/theumar_butt',
++        'Facebook : https://www.facebook.com/MohdUmarButtOfficial',
++        'GitHub   : https://github.com/mohdumarbutt',
++        'YouTube  : https://www.youtube.com/@mohdumarbutt_official',
++        'Telegram : https://t.me/UmaRock',
++        'TG Group : https://t.me/+NubNX5aSOI83ZjA1',
++        '━━━━━━━━━━━━━━━━━━━━━━',
++        'Built by Umar Butt — Full-stack dev (Python, JS, C++).'
++    ].join('\n');
++
+     await sock.sendMessage(chatId, {
+         contacts: { displayName: settings.botOwner, contacts: [{ vcard }] },
+     });
++
++    await sock.sendMessage(chatId, { text });
+ }
+ 
+ module.exports = ownerCommand;
+diff --git a/commands/pair.js b/commands/pair.js
+index cc38bc0..819b9d4 100644
+--- a/commands/pair.js
++++ b/commands/pair.js
+@@ -11,7 +11,7 @@ async function pairCommand(sock, chatId, message, q) {
+                     isForwarded: true,
+                     forwardedNewsletterMessageInfo: {
+                         newsletterJid: '120363161513685998@newsletter',
+-                        newsletterName: 'KnightBot MD',
++                        newsletterName: 'UmaRock',
+                         serverMessageId: -1
+                     }
+                 }
+@@ -30,7 +30,7 @@ async function pairCommand(sock, chatId, message, q) {
+                     isForwarded: true,
+                     forwardedNewsletterMessageInfo: {
+                         newsletterJid: '120363161513685998@newsletter',
+-                        newsletterName: 'KnightBot MD',
++                        newsletterName: 'UmaRock',
+                         serverMessageId: -1
+                     }
+                 }
+@@ -49,7 +49,7 @@ async function pairCommand(sock, chatId, message, q) {
+                         isForwarded: true,
+                         forwardedNewsletterMessageInfo: {
+                             newsletterJid: '120363161513685998@newsletter',
+-                            newsletterName: 'KnightBot MD',
++                            newsletterName: 'UmaRock',
+                             serverMessageId: -1
+                         }
+                     }
+@@ -63,7 +63,7 @@ async function pairCommand(sock, chatId, message, q) {
+                     isForwarded: true,
+                     forwardedNewsletterMessageInfo: {
+                         newsletterJid: '120363161513685998@newsletter',
+-                        newsletterName: 'KnightBot MD',
++                        newsletterName: 'UmaRock',
+                         serverMessageId: -1
+                     }
+                 }
+@@ -86,7 +86,7 @@ async function pairCommand(sock, chatId, message, q) {
+                             isForwarded: true,
+                             forwardedNewsletterMessageInfo: {
+                                 newsletterJid: '120363161513685998@newsletter',
+-                                newsletterName: 'KnightBot MD',
++                                newsletterName: 'UmaRock',
+                                 serverMessageId: -1
+                             }
+                         }
+@@ -107,7 +107,7 @@ async function pairCommand(sock, chatId, message, q) {
+                         isForwarded: true,
+                         forwardedNewsletterMessageInfo: {
+                             newsletterJid: '120363161513685998@newsletter',
+-                            newsletterName: 'KnightBot MD',
++                            newsletterName: 'UmaRock',
+                             serverMessageId: -1
+                         }
+                     }
+@@ -123,7 +123,7 @@ async function pairCommand(sock, chatId, message, q) {
+                 isForwarded: true,
+                 forwardedNewsletterMessageInfo: {
+                     newsletterJid: '120363161513685998@newsletter',
+-                    newsletterName: 'KnightBot MD',
++                    newsletterName: 'UmaRock',
+                     serverMessageId: -1
+                 }
+             }
+diff --git a/commands/simp.js b/commands/simp.js
+index 23c3fb0..0e0c504 100644
+--- a/commands/simp.js
++++ b/commands/simp.js
+@@ -38,7 +38,7 @@ async function simpCommand(sock, chatId, quotedMsg, mentionedJid, sender) {
+                 isForwarded: true,
+                 forwardedNewsletterMessageInfo: {
+                     newsletterJid: '120363161513685998@newsletter',
+-                    newsletterName: 'KnightBot MD',
++                    newsletterName: 'UmaRock',
+                     serverMessageId: -1
+                 }
+             }
+@@ -53,7 +53,7 @@ async function simpCommand(sock, chatId, quotedMsg, mentionedJid, sender) {
+                 isForwarded: true,
+                 forwardedNewsletterMessageInfo: {
+                     newsletterJid: '120363161513685998@newsletter',
+-                    newsletterName: 'KnightBot MD',
++                    newsletterName: 'UmaRock',
+                     serverMessageId: -1
+                 }
+             }
+diff --git a/commands/stats.js b/commands/stats.js
+new file mode 100644
+index 0000000..e19dc4c
+--- /dev/null
++++ b/commands/stats.js
+@@ -0,0 +1,64 @@
++const fs = require('fs');
++const path = require('path');
++const { isSudo } = require('../lib/index');
++
++const DATA_PATH = path.join(__dirname, '..', 'data', 'messageCount.json');
++
++function safeLoad() {
++  try {
++    if (!fs.existsSync(DATA_PATH)) {
++      return { isPublic: true, messageCount: {}, commandUsage: {} };
++    }
++    const raw = fs.readFileSync(DATA_PATH, 'utf8');
++    const parsed = JSON.parse(raw || '{}');
++    if (typeof parsed.isPublic !== 'boolean') parsed.isPublic = true;
++    if (!parsed.messageCount || typeof parsed.messageCount !== 'object') parsed.messageCount = {};
++    if (!parsed.commandUsage || typeof parsed.commandUsage !== 'object') parsed.commandUsage = {};
++    return parsed;
++  } catch {
++    return { isPublic: true, messageCount: {}, commandUsage: {} };
++  }
++}
++
++function safeSave(data) {
++  const tmp = DATA_PATH + '.tmp';
++  fs.writeFileSync(tmp, JSON.stringify(data, null, 2));
++  fs.renameSync(tmp, DATA_PATH);
++}
++
++function incrementCommandUsage(command) {
++  const data = safeLoad();
++  data.commandUsage[command] = (data.commandUsage[command] || 0) + 1;
++  safeSave(data);
++}
++
++async function statsCommand(sock, chatId, message) {
++  const senderId = message.key.participant || message.key.remoteJid;
++  const senderIsSudo = await isSudo(senderId);
++  if (!message.key.fromMe && !senderIsSudo) {
++    await sock.sendMessage(chatId, { text: '❌ Admin only: .stats' }, { quoted: message });
++    return;
++  }
++  const data = safeLoad();
++  const total = Object.values(data.commandUsage).reduce((a, b) => a + b, 0);
++  const top = Object.entries(data.commandUsage)
++    .sort((a, b) => b[1] - a[1])
++    .slice(0, 5);
++  let lines = [
++    '⚡ UMAᖇOCK BOT — STATS ⚡',
++    '━━━━━━━━━━━━━━━━━━━━━━',
++    `Total commands used: ${total}`,
++    '',
++    'Top 5 commands:'
++  ];
++  if (top.length === 0) {
++    lines.push('(no usage yet)');
++  } else {
++    top.forEach(([cmd, count], idx) => {
++      lines.push(`${idx + 1}. ${cmd} — ${count}`);
++    });
++  }
++  await sock.sendMessage(chatId, { text: lines.join('\n') }, { quoted: message });
++}
++
++module.exports = { statsCommand, incrementCommandUsage };
+diff --git a/commands/sticker.js b/commands/sticker.js
+index 6f3e20b..9f77078 100644
+--- a/commands/sticker.js
++++ b/commands/sticker.js
+@@ -37,7 +37,7 @@ async function stickerCommand(sock, chatId, message) {
+                 isForwarded: true,
+                 forwardedNewsletterMessageInfo: {
+                     newsletterJid: '120363161513685998@newsletter',
+-                    newsletterName: 'KnightBot MD',
++                    newsletterName: 'UmaRock',
+                     serverMessageId: -1
+                 }
+             }
+@@ -59,7 +59,7 @@ async function stickerCommand(sock, chatId, message) {
+                     isForwarded: true,
+                     forwardedNewsletterMessageInfo: {
+                         newsletterJid: '120363161513685998@newsletter',
+-                        newsletterName: 'KnightBot MD',
++                        newsletterName: 'UmaRock',
+                         serverMessageId: -1
+                     }
+                 }
+@@ -151,7 +151,7 @@ async function stickerCommand(sock, chatId, message) {
+         // Create metadata
+         const json = {
+             'sticker-pack-id': crypto.randomBytes(32).toString('hex'),
+-            'sticker-pack-name': settings.packname || 'KnightBot',
++            'sticker-pack-name': settings.packname || '⚡ UmaRock | AI Bot',
+             'emojis': ['🤖']
+         };
+ 
+@@ -181,7 +181,7 @@ async function stickerCommand(sock, chatId, message) {
+                     await img2.load(smallWebp);
+                     const json2 = {
+                         'sticker-pack-id': crypto.randomBytes(32).toString('hex'),
+-                        'sticker-pack-name': settings.packname || 'KnightBot',
++                        'sticker-pack-name': settings.packname || '⚡ UmaRock | AI Bot',
+                         'emojis': ['🤖']
+                     };
+                     const exifAttr2 = Buffer.from([0x49, 0x49, 0x2A, 0x00, 0x08, 0x00, 0x00, 0x00, 0x01, 0x00, 0x41, 0x57, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00]);
+@@ -217,7 +217,7 @@ async function stickerCommand(sock, chatId, message) {
+                 isForwarded: true,
+                 forwardedNewsletterMessageInfo: {
+                     newsletterJid: '120363161513685998@newsletter',
+-                    newsletterName: 'KnightBot MD',
++                    newsletterName: 'UmaRock',
+                     serverMessageId: -1
+                 }
+             }
+diff --git a/commands/stickercrop.js b/commands/stickercrop.js
+index 6703d58..a34139c 100644
+--- a/commands/stickercrop.js
++++ b/commands/stickercrop.js
+@@ -37,7 +37,7 @@ async function stickercropCommand(sock, chatId, message) {
+                 isForwarded: true,
+                 forwardedNewsletterMessageInfo: {
+                     newsletterJid: '120363161513685998@newsletter',
+-                    newsletterName: 'KnightBot MD',
++                    newsletterName: 'UmaRock',
+                     serverMessageId: -1
+                 }
+             }
+@@ -59,7 +59,7 @@ async function stickercropCommand(sock, chatId, message) {
+                     isForwarded: true,
+                     forwardedNewsletterMessageInfo: {
+                         newsletterJid: '120363161513685998@newsletter',
+-                        newsletterName: 'KnightBot MD',
++                        newsletterName: 'UmaRock',
+                         serverMessageId: -1
+                     }
+                 }
+@@ -149,7 +149,7 @@ async function stickercropCommand(sock, chatId, message) {
+         // Create metadata
+         const json = {
+             'sticker-pack-id': crypto.randomBytes(32).toString('hex'),
+-            'sticker-pack-name': settings.packname || 'KnightBot',
++            'sticker-pack-name': settings.packname || '⚡ UmaRock | AI Bot',
+             'emojis': ['✂️']
+         };
+ 
+@@ -187,7 +187,7 @@ async function stickercropCommand(sock, chatId, message) {
+                 isForwarded: true,
+                 forwardedNewsletterMessageInfo: {
+                     newsletterJid: '120363161513685998@newsletter',
+-                    newsletterName: 'KnightBot MD',
++                    newsletterName: 'UmaRock',
+                     serverMessageId: -1
+                 }
+             }
+@@ -235,7 +235,7 @@ async function stickercropFromBuffer(inputBuffer, isAnimated) {
+     await img.load(webpBuffer);
+     const json = {
+         'sticker-pack-id': crypto.randomBytes(32).toString('hex'),
+-        'sticker-pack-name': settings.packname || 'KnightBot',
++        'sticker-pack-name': settings.packname || '⚡ UmaRock | AI Bot',
+         'emojis': ['✂️']
+     };
+     const exifAttr = Buffer.from([0x49, 0x49, 0x2A, 0x00, 0x08, 0x00, 0x00, 0x00, 0x01, 0x00, 0x41, 0x57, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00]);
+diff --git a/commands/take.js b/commands/take.js
+index 166560c..07adaa0 100644
+--- a/commands/take.js
++++ b/commands/take.js
+@@ -14,7 +14,7 @@ async function takeCommand(sock, chatId, message, args) {
+         }
+ 
+         // Get the packname from args or use default
+-        const packname = args.join(' ') || 'Knight Bot';
++        const packname = args.join(' ') || '⚡ UmaRock | AI Bot';
+ 
+         try {
+             // Download the sticker
+diff --git a/commands/textmaker.js b/commands/textmaker.js
+index bdd30be..8531dc8 100644
+--- a/commands/textmaker.js
++++ b/commands/textmaker.js
+@@ -6,8 +6,9 @@ const channelInfo = {
+     forwardingScore: 1,
+     isForwarded: true,
+     forwardedNewsletterMessageInfo: {
+-        newsletterJid: '120363161513685998@newsletter',
+-        newsletterName: 'KnightBot MD',
++        // TODO: Insert your channel JID here (format: 120363XXXXXXXXX@newsletter)
++        newsletterJid: 'TODO_NEWSLETTER_JID',
++        newsletterName: 'UmaRock',
+         serverMessageId: -1
+     }
+ };
+@@ -20,7 +21,7 @@ const messageTemplates = {
+     }),
+     success: (text, imageUrl) => ({
+         image: { url: imageUrl },
+-        caption: "GENERATED BY KNIGHT-BOT",
++        caption: "GENERATED BY UMAROCK BOT",
+         contextInfo: channelInfo
+     })
+ };
+diff --git a/commands/video.js b/commands/video.js
+index 70de1a2..1bf8c9c 100644
+--- a/commands/video.js
++++ b/commands/video.js
+@@ -109,7 +109,7 @@ async function videoCommand(sock, chatId, message) {
+             video: { url: videoData.download },
+             mimetype: 'video/mp4',
+             fileName: `${videoData.title || videoTitle || 'video'}.mp4`,
+-            caption: `*${videoData.title || videoTitle || 'Video'}*\n\n> *_Downloaded by Knight Bot MD_*`
++            caption: `*${videoData.title || videoTitle || 'Video'}*\n\n> *_Downloaded by UmaRock Bot_*`
+         }, { quoted: message });
+ 
+ 
+diff --git a/commands/welcome.js b/commands/welcome.js
+index abb3ab9..772697b 100644
+--- a/commands/welcome.js
++++ b/commands/welcome.js
+@@ -85,7 +85,7 @@ async function handleJoinEvent(sock, id, participants) {
+                 // Send welcome image with stylish caption
+                 await sock.sendMessage(id, {
+                     image: imageBuffer,
+-                    caption: `╭╼━≪•𝙽𝙴𝚆 𝙼𝙴𝙼𝙱𝙴𝚁•≫━╾╮\n┃𝚆𝙴𝙻𝙲𝙾𝙼𝙴: @${displayName} 👋\n┃Member count: #${groupMetadata.participants.length}\n┃𝚃𝙸𝙼𝙴: ${timeString}⏰\n╰━━━━━━━━━━━━━━━╯\n\n*@${displayName}* Welcome to *${groupName}*! 🎉\n*Group 𝙳𝙴𝚂𝙲𝚁𝙸𝙿𝚃𝙸𝙾𝙽*\n${groupDesc}\n\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ Knight Bot*`,
++                    caption: `╔════════════════════════╗\n⚡  UMAROCK BOT  ⚡\n╚════════════════════════╝\n\nWelcome @${displayName} to ${groupName}!\nBuilt by: Umar Butt — Full-stack Developer\nUse .help to see commands.`,
+                     mentions: [participant],
+                     ...channelInfo
+                 });
+@@ -103,7 +103,7 @@ async function handleJoinEvent(sock, id, participants) {
+                 });
+ 
+                 // Fallback to text message if API fails
+-                const welcomeMessage = `╭╼━≪•𝙽𝙴𝚆 𝙼𝙴𝙼𝙱𝙴𝚁•≫━╾╮\n┃𝚆𝙴𝙻𝙲𝙾𝙼𝙴: @${displayName} 👋\n┃Member count: #${groupMetadata.participants.length}\n┃𝚃𝙸𝙼𝙴: ${timeString}⏰\n╰━━━━━━━━━━━━━━━╯\n\n*@${displayName}* Welcome to *${groupName}*! 🎉\n*Group 𝙳𝙴𝚂𝙲𝚁𝙸𝙿𝚃𝙸𝙾𝙽*\n${groupDesc}\n\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ Knight Bot*`;
++                const welcomeMessage = `╔════════════════════════╗\n⚡  UMAROCK BOT  ⚡\n╚════════════════════════╝\n\nWelcome @${displayName} to ${groupName}!\nBuilt by: Umar Butt — Full-stack Developer\nUse .help to see commands.`;
+                 await sock.sendMessage(id, {
+                     text: welcomeMessage,
+                     mentions: [participant],
+@@ -127,7 +127,7 @@ async function handleJoinEvent(sock, id, participants) {
+                 hour12: true
+             });
+ 
+-            const welcomeMessage = `╭╼━≪•𝙽𝙴𝚆 𝙼𝙴𝙼𝙱𝙴𝚁•≫━╾╮\n┃𝚆𝙴𝙻𝙲𝙾𝙼𝙴: @${user} 👋\n┃Member count: #${groupMetadata.participants.length}\n┃𝚃𝙸𝙼𝙴: ${timeString}⏰\n╰━━━━━━━━━━━━━━━╯\n\n*@${user}* Welcome to *${groupName}*! 🎉\n*Group 𝙳𝙴𝚂𝙲𝚁𝙸𝙿𝚃𝙸𝙾𝙽*\n${groupDesc}\n\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ Knight Bot*`;
++            const welcomeMessage = `╔════════════════════════╗\n⚡  UMAROCK BOT  ⚡\n╚════════════════════════╝\n\nWelcome @${user} to ${groupName}!\nBuilt by: Umar Butt — Full-stack Developer\nUse .help to see commands.`;
+             await sock.sendMessage(id, {
+                 text: welcomeMessage,
+                 mentions: [participant],
+diff --git a/config.js b/config.js
+index 465f641..7e25286 100644
+--- a/config.js
++++ b/config.js
+@@ -23,8 +23,18 @@ global.APIKeys = {
+     'https://api-fgmods.ddns.net': 'fg-dylux'
+ };
+ 
++// UmaRock Bot configuration sync
++const settings = require('./settings');
++
+ module.exports = {
+     WARN_COUNT: 3,
+     APIs: global.APIs,
+-    APIKeys: global.APIKeys
++    APIKeys: global.APIKeys,
++    botName: settings.botName,
++    botOwner: settings.botOwner,
++    ownerNumber: settings.ownerNumber,
++    packname: settings.packname,
++    author: settings.author,
++    version: settings.version,
++    themeEmoji: settings.themeEmoji,
+ };
+\ No newline at end of file
+diff --git a/data/owner.json b/data/owner.json
+index 415a9b3..aa5ba06 100644
+--- a/data/owner.json
++++ b/data/owner.json
+@@ -1 +1 @@
+-["910000000000","917023951514"]
+\ No newline at end of file
++["916006987121"]
+\ No newline at end of file
+diff --git a/index.js b/index.js
+index 1388ac3..e0ca297 100644
+--- a/index.js
++++ b/index.js
+@@ -1,13 +1,9 @@
+ /**
+- * Knight Bot - A WhatsApp Bot
+- * Copyright (c) 2024 Professor
+- * 
+- * This program is free software: you can redistribute it and/or modify
+- * it under the terms of the MIT License.
+- * 
+- * Credits:
+- * - Baileys Library by @adiwajshing
+- * - Pair Code implementation inspired by TechGod143 & DGXEON
++ * UmaRock Bot - A WhatsApp Bot
++ * Modified by Mohd Umar Butt (2025)
++ * Based on Knight Bot MD by Professor (Mr Unique Hacker)
++ * Original: https://github.com/mruniquehacker/Knightbot-MD
++ * Licensed under MIT License
+  */
+ require('./settings')
+ const { Boom } = require('@hapi/boom')
+@@ -73,8 +69,8 @@ setInterval(() => {
+ let phoneNumber = "911234567890"
+ let owner = JSON.parse(fs.readFileSync('./data/owner.json'))
+ 
+-global.botname = "KNIGHT BOT"
+-global.themeemoji = "•"
++global.botname = "UmaRock Bot"
++global.themeemoji = "⚡"
+ const pairingCode = !!phoneNumber || process.argv.includes("--pairing-code")
+ const useMobile = process.argv.includes("--mobile")
+ 
+@@ -148,8 +144,9 @@ async function startXeonBotInc() {
+                             forwardingScore: 1,
+                             isForwarded: true,
+                             forwardedNewsletterMessageInfo: {
+-                                newsletterJid: '120363161513685998@newsletter',
+-                                newsletterName: 'KnightBot MD',
++                                // TODO: Insert your channel JID here (format: 120363XXXXXXXXX@newsletter)
++                                newsletterJid: 'TODO_NEWSLETTER_JID',
++                                newsletterName: 'UmaRock',
+                                 serverMessageId: -1
+                             }
+                         }
+@@ -242,26 +239,26 @@ async function startXeonBotInc() {
+ 
+             const botNumber = XeonBotInc.user.id.split(':')[0] + '@s.whatsapp.net';
+             await XeonBotInc.sendMessage(botNumber, {
+-                text: `🤖 Bot Connected Successfully!\n\n⏰ Time: ${new Date().toLocaleString()}\n✅ Status: Online and Ready!
+-                \n✅Make sure to join below channel`,
++                text: `⚡ UMAROCK BOT ⚡\n\n⏰ Time: ${new Date().toLocaleString()}\n✅ Status: Online and Ready!\n🔖 Version: ${settings.version}\n\n✅ Join our channel: ${global.channelLink || ''}`,
+                 contextInfo: {
+                     forwardingScore: 1,
+                     isForwarded: true,
+                     forwardedNewsletterMessageInfo: {
+-                        newsletterJid: '120363161513685998@newsletter',
+-                        newsletterName: 'KnightBot MD',
++                        // TODO: Insert your channel JID here (format: 120363XXXXXXXXX@newsletter)
++                        newsletterJid: 'TODO_NEWSLETTER_JID',
++                        newsletterName: 'UmaRock',
+                         serverMessageId: -1
+                     }
+                 }
+             });
+ 
+             await delay(1999)
+-            console.log(chalk.yellow(`\n\n                  ${chalk.bold.blue(`[ ${global.botname || 'KNIGHT BOT'} ]`)}\n\n`))
++            console.log(chalk.yellow(`\n\n                  ${chalk.bold.blue(`[ ${global.botname || 'UMAROCK BOT'} ]`)}\n\n`))
+             console.log(chalk.cyan(`< ================================================== >`))
+-            console.log(chalk.magenta(`\n${global.themeemoji || '•'} YT CHANNEL: MR UNIQUE HACKER`))
+-            console.log(chalk.magenta(`${global.themeemoji || '•'} GITHUB: mrunqiuehacker`))
+-            console.log(chalk.magenta(`${global.themeemoji || '•'} WA NUMBER: ${owner}`))
+-            console.log(chalk.magenta(`${global.themeemoji || '•'} CREDIT: MR UNIQUE HACKER`))
++            console.log(chalk.magenta(`\n${global.themeemoji || '⚡'} OWNER: Mohd Umar Butt (Umar Butt)`))
++            console.log(chalk.magenta(`${global.themeemoji || '⚡'} GITHUB: mohdumarbutt`))
++            console.log(chalk.magenta(`${global.themeemoji || '⚡'} WA NUMBER: ${owner}`))
++            console.log(chalk.magenta(`${global.themeemoji || '⚡'} CHANNEL: https://whatsapp.com/channel/0029Vb6vgNd5PO0wMurhKp01`))
+             console.log(chalk.green(`${global.themeemoji || '•'} 🤖 Bot Connected Successfully! ✅`))
+             console.log(chalk.blue(`Bot Version: ${settings.version}`))
+         }
+diff --git a/lib/db.example.js b/lib/db.example.js
+new file mode 100644
+index 0000000..c458ed0
+--- /dev/null
++++ b/lib/db.example.js
+@@ -0,0 +1,22 @@
++// Optional MongoDB helper (not wired into runtime by default)
++// Enable by setting settings.useMongoDB=true and providing process.env.MONGO_URI
++
++const { MongoClient } = require('mongodb');
++
++let client;
++
++async function getClient() {
++  if (client) return client;
++  const uri = process.env.MONGO_URI;
++  if (!uri) throw new Error('MONGO_URI is not set');
++  client = new MongoClient(uri, { maxPoolSize: 5 });
++  await client.connect();
++  return client;
++}
++
++async function getDb(dbName = 'umarock_bot') {
++  const c = await getClient();
++  return c.db(dbName);
++}
++
++module.exports = { getDb };
+diff --git a/lib/messageConfig.js b/lib/messageConfig.js
+index 6030e59..23c2fab 100644
+--- a/lib/messageConfig.js
++++ b/lib/messageConfig.js
+@@ -1 +1,16 @@
+-const _0x31224a=_0x552b;(function(_0x29eac7,_0x551f94){const _0x39ca6f=_0x552b,_0x586da0=_0x29eac7();while(!![]){try{const _0xa3d897=parseInt(_0x39ca6f(0x153))/(-0x226a+0xe9b+0x13d0)+-parseInt(_0x39ca6f(0x148))/(0x4*0x977+0x39*-0x83+0x27*-0x39)+parseInt(_0x39ca6f(0x154))/(-0x2521+0x1*0x88a+0x1c9a)+parseInt(_0x39ca6f(0x14b))/(0x1aa*-0x17+0x2a1*0xd+-0x15f*-0x3)+parseInt(_0x39ca6f(0x152))/(-0x95*-0x17+0x2*-0x1084+0x2*0x9d5)*(parseInt(_0x39ca6f(0x14e))/(-0x1386+-0x5e5+0x1971))+-parseInt(_0x39ca6f(0x14a))/(-0xa9*0xd+-0x1e36+0x26d2)*(-parseInt(_0x39ca6f(0x149))/(0x3d*0x9d+0x1a9f+-0x4000))+-parseInt(_0x39ca6f(0x14d))/(0x185*0x11+-0x7c4+-0x1208);if(_0xa3d897===_0x551f94)break;else _0x586da0['push'](_0x586da0['shift']());}catch(_0x39c3f8){_0x586da0['push'](_0x586da0['shift']());}}}(_0x2374,0x76bfe+0x246b1*0x2+0x1*-0x42c85));function _0x552b(_0x28f357,_0x3e5540){const _0x14a960=_0x2374();return _0x552b=function(_0x5e4e30,_0x1a85a2){_0x5e4e30=_0x5e4e30-(0x1ff3+0x13d*-0xe+0x239*-0x6);let _0x590c63=_0x14a960[_0x5e4e30];return _0x590c63;},_0x552b(_0x28f357,_0x3e5540);}const channelInfo={'contextInfo':{'forwardingScore':0x3e7,'isForwarded':!![],'forwardedNewsletterMessageInfo':{'newsletterJid':_0x31224a(0x14f)+_0x31224a(0x151)+_0x31224a(0x14c),'newsletterName':_0x31224a(0x147)+'MD','serverMessageId':-(-0x1*0x223e+-0x94*0x1e+0x3397)}}};function _0x2374(){const _0x411e83=['KnightBot\x20','72918BePLZb','496TkpwgR','58933RPcimR','889876kcTVRo','ewsletter','19191636oyxHDY','8154KhRZeK','1203631615','exports','13685998@n','1195vLewmn','1011569IKQnSU','1797723Zyajvb'];_0x2374=function(){return _0x411e83;};return _0x2374();}module[_0x31224a(0x150)]={'channelInfo':channelInfo};
+\ No newline at end of file
++// Centralized channel information for forwarded messages
++// TODO: Insert your channel JID here (format: 120363XXXXXXXXX@newsletter)
++// To obtain: post a message in your WhatsApp Channel from the bot account, then inspect the message context in logs/session to copy the newsletter JID.
++const channelInfo = {
++  contextInfo: {
++    forwardingScore: 999,
++    isForwarded: true,
++    forwardedNewsletterMessageInfo: {
++      newsletterJid: 'TODO_NEWSLETTER_JID',
++      newsletterName: 'UmaRock',
++      serverMessageId: -1,
++    },
++  },
++};
++
++module.exports = { channelInfo };
+\ No newline at end of file
+diff --git a/lib/rateLimiter.js b/lib/rateLimiter.js
+new file mode 100644
+index 0000000..4e49da4
+--- /dev/null
++++ b/lib/rateLimiter.js
+@@ -0,0 +1,18 @@
++// Extremely lightweight in-memory token bucket rate limiter per user
++// Usage: if (!allow(userId, 'cmd', 3, 10_000)) { /* block */ }
++
++const buckets = new Map();
++
++function allow(userId, scope, limit, windowMs) {
++  const key = `${userId}:${scope}`;
++  const now = Date.now();
++  let entry = buckets.get(key);
++  if (!entry || now - entry.windowStart > windowMs) {
++    entry = { windowStart: now, count: 0 };
++  }
++  entry.count += 1;
++  buckets.set(key, entry);
++  return entry.count <= limit;
++}
++
++module.exports = { allow };
+diff --git a/lib/welcome.js b/lib/welcome.js
+index 1689373..3310a27 100644
+--- a/lib/welcome.js
++++ b/lib/welcome.js
+@@ -4,7 +4,7 @@ const { delay } = require('@whiskeysockets/baileys');
+ async function handleWelcome(sock, chatId, message, match) {
+     if (!match) {
+         return sock.sendMessage(chatId, {
+-            text: `📥 *Welcome Message Setup*\n\n✅ *.welcome on* — Enable welcome messages\n🛠️ *.welcome set Your custom message* — Set a custom welcome message\n🚫 *.welcome off* — Disable welcome messages\n\n*Available Variables:*\n• {user} - Mentions the new member\n• {group} - Shows group name\n• {description} - Shows group description`,
++            text: `📥 *Welcome Message Setup*\n\n✅ *.welcome on* — Enable welcome messages\n🛠️ *.welcome set Your custom message* — Set a custom welcome message\n🚫 *.welcome off* — Disable welcome messages\n\n*Available Variables:*\n• {user} - Mentions the new member\n• {group} - Shows group name\n• {description} - Shows group description\n\nDefault Template (UmaRock):\n╔════════════════════════╗\n⚡  UMAROCK BOT  ⚡\n╚════════════════════════╝\n\nWelcome @{user} to {group}!\nBuilt by: Umar Butt — Full-stack Developer\nUse .help to see commands.`,
+             quoted: message
+         });
+     }
+diff --git a/main.js b/main.js
+index 23240ce..766596b 100644
+--- a/main.js
++++ b/main.js
+@@ -56,6 +56,7 @@ const { dareCommand } = require('./commands/dare');
+ const { truthCommand } = require('./commands/truth');
+ const { clearCommand } = require('./commands/clear');
+ const pingCommand = require('./commands/ping');
++const { statsCommand, incrementCommandUsage } = require('./commands/stats');
+ const aliveCommand = require('./commands/alive');
+ const blurCommand = require('./commands/img-blur');
+ const { welcomeCommand, handleJoinEvent } = require('./commands/welcome');
+@@ -120,8 +121,8 @@ const soraCommand = require('./commands/sora');
+ // Global settings
+ global.packname = settings.packname;
+ global.author = settings.author;
+-global.channelLink = "https://whatsapp.com/channel/0029Va90zAnIHphOuO8Msp3A";
+-global.ytch = "Mr Unique Hacker";
++global.channelLink = "https://whatsapp.com/channel/0029Vb6vgNd5PO0wMurhKp01"; // UmaRock Channel
++global.ytch = "Umar Butt";
+ 
+ // Add this near the top of main.js with other global configurations
+ const channelInfo = {
+@@ -129,8 +130,9 @@ const channelInfo = {
+         forwardingScore: 1,
+         isForwarded: true,
+         forwardedNewsletterMessageInfo: {
+-            newsletterJid: '120363161513685998@newsletter',
+-            newsletterName: 'KnightBot MD',
++            // TODO: Insert your channel JID here (format: 120363XXXXXXXXX@newsletter)
++            newsletterJid: 'TODO_NEWSLETTER_JID',
++            newsletterName: 'UmaRock',
+             serverMessageId: -1
+         }
+     }
+@@ -181,6 +183,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
+         // Only log command usage
+         if (userMessage.startsWith('.')) {
+             console.log(`📝 Command used in ${isGroup ? 'group' : 'private'}: ${userMessage}`);
++            try { incrementCommandUsage(userMessage.split(' ')[0]); } catch {}
+         }
+         // Enforce private mode BEFORE any replies (except owner/sudo)
+         try {
+@@ -620,6 +623,9 @@ async function handleMessages(sock, messageUpdate, printLog) {
+             case userMessage === '.alive':
+                 await aliveCommand(sock, chatId, message);
+                 break;
++            case userMessage === '.stats':
++                await statsCommand(sock, chatId, message);
++                break;
+             case userMessage.startsWith('.mention '):
+                 {
+                     const args = userMessage.split(' ').slice(1).join(' ');
+diff --git a/settings.js b/settings.js
+index 0fee5d0..c65f3d1 100644
+--- a/settings.js
++++ b/settings.js
+@@ -1,16 +1,22 @@
+ const settings = {
+-  packname: 'Knight Bot',
+-  author: '‎',
+-  botName: "Knight Bot",
+-  botOwner: 'Professor', // Your name
+-  ownerNumber: '919876543210', //Set your number here without + symbol, just add country code & number without any space
++  packname: '⚡ UmaRock | AI Bot',
++  author: 'Umar Butt',
++  botName: "UmaRock Bot",
++  botOwner: 'Mohd Umar Butt', // Your name
++  ownerNumber: '916006987121', //Set your number here without + symbol, just add country code & number without any space
++  themeEmoji: '⚡',
++  version: "1.0.0",
++
++  // Existing config retained
+   giphyApiKey: 'qnl7ssQChTdPjsKta2Ax2LMaGXz303tq',
+   commandMode: "public",
+   maxStoreMessages: 20, 
+   storeWriteInterval: 10000,
+   description: "This is a bot for managing group commands and automating tasks.",
+-  version: "2.2.2",
+   updateZipUrl: "https://github.com/mruniquehacker/Knightbot-MD/archive/refs/heads/main.zip",
++
++  // Optional enhancements
++  useMongoDB: false, // If true, expects process.env.MONGO_URI
+ };
+ 
+ module.exports = settings;
