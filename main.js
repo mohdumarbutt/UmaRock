@@ -57,6 +57,7 @@ const { truthCommand } = require('./commands/truth');
 const { clearCommand } = require('./commands/clear');
 const pingCommand = require('./commands/ping');
 const aliveCommand = require('./commands/alive');
+const statsCommand = require('./commands/stats');
 const blurCommand = require('./commands/img-blur');
 const { welcomeCommand, handleJoinEvent } = require('./commands/welcome');
 const { goodbyeCommand, handleLeaveEvent } = require('./commands/goodbye');
@@ -120,8 +121,8 @@ const soraCommand = require('./commands/sora');
 // Global settings
 global.packname = settings.packname;
 global.author = settings.author;
-global.channelLink = "https://whatsapp.com/channel/0029Va90zAnIHphOuO8Msp3A";
-global.ytch = "Mr Unique Hacker";
+global.channelLink = "https://whatsapp.com/channel/0029Vb6vgNd5PO0wMurhKp01";
+global.ytch = "Mohd Umar Butt Official";
 
 // Add this near the top of main.js with other global configurations
 const channelInfo = {
@@ -129,8 +130,8 @@ const channelInfo = {
         forwardingScore: 1,
         isForwarded: true,
         forwardedNewsletterMessageInfo: {
-            newsletterJid: '120363161513685998@newsletter',
-            newsletterName: 'KnightBot MD',
+            newsletterJid: 'TODO_NEWSLETTER_JID',
+            newsletterName: 'UmaRock',
             serverMessageId: -1
         }
     }
@@ -619,6 +620,13 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 break;
             case userMessage === '.alive':
                 await aliveCommand(sock, chatId, message);
+                break;
+            case userMessage === '.stats':
+                if (!message.key.fromMe && !senderIsSudo) {
+                    await sock.sendMessage(chatId, { text: '❌ This command is only available for the owner or sudo!' }, { quoted: message });
+                    break;
+                }
+                await statsCommand(sock, chatId, message);
                 break;
             case userMessage.startsWith('.mention '):
                 {

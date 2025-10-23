@@ -1,13 +1,9 @@
 /**
- * Knight Bot - A WhatsApp Bot
- * Copyright (c) 2024 Professor
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the MIT License.
- * 
- * Credits:
- * - Baileys Library by @adiwajshing
- * - Pair Code implementation inspired by TechGod143 & DGXEON
+ * UmaRock Bot - A WhatsApp Bot
+ * Modified by Mohd Umar Butt (2025)
+ * Based on Knight Bot MD by Professor (Mr Unique Hacker)
+ * Original: https://github.com/mruniquehacker/Knightbot-MD
+ * Licensed under MIT License
  */
 require('./settings')
 const { Boom } = require('@hapi/boom')
@@ -73,8 +69,8 @@ setInterval(() => {
 let phoneNumber = "911234567890"
 let owner = JSON.parse(fs.readFileSync('./data/owner.json'))
 
-global.botname = "KNIGHT BOT"
-global.themeemoji = "•"
+global.botname = "UMAROCK BOT"
+global.themeemoji = "⚡"
 const pairingCode = !!phoneNumber || process.argv.includes("--pairing-code")
 const useMobile = process.argv.includes("--mobile")
 
@@ -148,8 +144,8 @@ async function startXeonBotInc() {
                             forwardingScore: 1,
                             isForwarded: true,
                             forwardedNewsletterMessageInfo: {
-                                newsletterJid: '120363161513685998@newsletter',
-                                newsletterName: 'KnightBot MD',
+                                newsletterJid: 'TODO_NEWSLETTER_JID',
+                                newsletterName: 'UmaRock',
                                 serverMessageId: -1
                             }
                         }
@@ -248,21 +244,21 @@ async function startXeonBotInc() {
                     forwardingScore: 1,
                     isForwarded: true,
                     forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363161513685998@newsletter',
-                        newsletterName: 'KnightBot MD',
+                        newsletterJid: 'TODO_NEWSLETTER_JID',
+                        newsletterName: 'UmaRock',
                         serverMessageId: -1
                     }
                 }
             });
 
             await delay(1999)
-            console.log(chalk.yellow(`\n\n                  ${chalk.bold.blue(`[ ${global.botname || 'KNIGHT BOT'} ]`)}\n\n`))
+            console.log(chalk.yellow(`\n\n                  ${chalk.bold.blue(`[ ${global.botname || 'UMAROCK BOT'} ]`)}\n\n`))
             console.log(chalk.cyan(`< ================================================== >`))
-            console.log(chalk.magenta(`\n${global.themeemoji || '•'} YT CHANNEL: MR UNIQUE HACKER`))
-            console.log(chalk.magenta(`${global.themeemoji || '•'} GITHUB: mrunqiuehacker`))
-            console.log(chalk.magenta(`${global.themeemoji || '•'} WA NUMBER: ${owner}`))
-            console.log(chalk.magenta(`${global.themeemoji || '•'} CREDIT: MR UNIQUE HACKER`))
-            console.log(chalk.green(`${global.themeemoji || '•'} 🤖 Bot Connected Successfully! ✅`))
+            console.log(chalk.magenta(`\n${global.themeemoji || '⚡'} YT CHANNEL: Mohd Umar Butt Official`))
+            console.log(chalk.magenta(`${global.themeemoji || '⚡'} GITHUB: mohdumarbutt`))
+            console.log(chalk.magenta(`${global.themeemoji || '⚡'} WA NUMBER: ${owner}`))
+            console.log(chalk.magenta(`${global.themeemoji || '⚡'} CREDIT: Mohd Umar Butt`))
+            console.log(chalk.green(`${global.themeemoji || '⚡'} 🤖 Bot Connected Successfully! ✅`))
             console.log(chalk.blue(`Bot Version: ${settings.version}`))
         }
         if (connection === 'close') {
