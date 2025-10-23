@@ -23,8 +23,18 @@ global.APIKeys = {
     'https://api-fgmods.ddns.net': 'fg-dylux'
 };
 
+// UmaRock Bot configuration sync
+const settings = require('./settings');
+
 module.exports = {
     WARN_COUNT: 3,
     APIs: global.APIs,
-    APIKeys: global.APIKeys
+    APIKeys: global.APIKeys,
+    botName: settings.botName,
+    botOwner: settings.botOwner,
+    ownerNumber: settings.ownerNumber,
+    packname: settings.packname,
+    author: settings.author,
+    version: settings.version,
+    themeEmoji: settings.themeEmoji,
 };

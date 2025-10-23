@@ -6,8 +6,9 @@ const channelInfo = {
         forwardingScore: 1,
         isForwarded: true,
         forwardedNewsletterMessageInfo: {
-            newsletterJid: '120363161513685998@newsletter',
-            newsletterName: 'KnightBot MD',
+            // TODO: Insert your channel JID here (format: 120363XXXXXXXXX@newsletter)
+            newsletterJid: 'TODO_NEWSLETTER_JID',
+            newsletterName: 'UmaRock',
             serverMessageId: -1
         }
     }
