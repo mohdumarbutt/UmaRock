@@ -57,6 +57,7 @@ const { truthCommand } = require('./commands/truth');
 const { clearCommand } = require('./commands/clear');
 const pingCommand = require('./commands/ping');
 const aliveCommand = require('./commands/alive');
+const statsCommand = require('./commands/stats');
 const blurCommand = require('./commands/img-blur');
 const { welcomeCommand, handleJoinEvent } = require('./commands/welcome');
 const { goodbyeCommand, handleLeaveEvent } = require('./commands/goodbye');
@@ -129,8 +130,8 @@ const channelInfo = {
         forwardingScore: 1,
         isForwarded: true,
         forwardedNewsletterMessageInfo: {
-            newsletterJid: '120363161513685998@newsletter',
-            newsletterName: 'KnightBot MD',
+            newsletterJid: 'TODO_NEWSLETTER_JID',
+            newsletterName: 'UmaRock',
             serverMessageId: -1
         }
     }
@@ -619,6 +620,9 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 break;
             case userMessage === '.alive':
                 await aliveCommand(sock, chatId, message);
+                break;
+            case userMessage === '.stats':
+                await statsCommand(sock, chatId, message);
                 break;
             case userMessage.startsWith('.mention '):
                 {

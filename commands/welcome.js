@@ -85,7 +85,16 @@ async function handleJoinEvent(sock, id, participants) {
                 // Send welcome image with stylish caption
                 await sock.sendMessage(id, {
                     image: imageBuffer,
-                    caption: `╭╼━≪•𝙽𝙴𝚆 𝙼𝙴𝙼𝙱𝙴𝚁•≫━╾╮\n┃𝚆𝙴𝙻𝙲𝙾𝙼𝙴: @${displayName} 👋\n┃Member count: #${groupMetadata.participants.length}\n┃𝚃𝙸𝙼𝙴: ${timeString}⏰\n╰━━━━━━━━━━━━━━━╯\n\n*@${displayName}* Welcome to *${groupName}*! 🎉\n*Group 𝙳𝙴𝚂𝙲𝚁𝙸𝙿𝚃𝙸𝙾𝙽*\n${groupDesc}\n\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ Knight Bot*`,
+                    caption: `╔════════════════════════╗
+⚡  UMAROCK BOT  ⚡
+╚════════════════════════╝
+
+Welcome @${displayName} to ${groupName}!
+Built by: Umar Butt — Full-stack Developer
+Use .help to see commands.
+
+Member count: #${groupMetadata.participants.length}
+Time: ${timeString}`,
                     mentions: [participant],
                     ...channelInfo
                 });
@@ -103,7 +112,16 @@ async function handleJoinEvent(sock, id, participants) {
                 });
 
                 // Fallback to text message if API fails
-                const welcomeMessage = `╭╼━≪•𝙽𝙴𝚆 𝙼𝙴𝙼𝙱𝙴𝚁•≫━╾╮\n┃𝚆𝙴𝙻𝙲𝙾𝙼𝙴: @${displayName} 👋\n┃Member count: #${groupMetadata.participants.length}\n┃𝚃𝙸𝙼𝙴: ${timeString}⏰\n╰━━━━━━━━━━━━━━━╯\n\n*@${displayName}* Welcome to *${groupName}*! 🎉\n*Group 𝙳𝙴𝚂𝙲𝚁𝙸𝙿𝚃𝙸𝙾𝙽*\n${groupDesc}\n\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ Knight Bot*`;
+                const welcomeMessage = `╔════════════════════════╗
+⚡  UMAROCK BOT  ⚡
+╚════════════════════════╝
+
+Welcome @${displayName} to ${groupName}!
+Built by: Umar Butt — Full-stack Developer
+Use .help to see commands.
+
+Member count: #${groupMetadata.participants.length}
+Time: ${timeString}`;
                 await sock.sendMessage(id, {
                     text: welcomeMessage,
                     mentions: [participant],
@@ -127,7 +145,16 @@ async function handleJoinEvent(sock, id, participants) {
                 hour12: true
             });
 
-            const welcomeMessage = `╭╼━≪•𝙽𝙴𝚆 𝙼𝙴𝙼𝙱𝙴𝚁•≫━╾╮\n┃𝚆𝙴𝙻𝙲𝙾𝙼𝙴: @${user} 👋\n┃Member count: #${groupMetadata.participants.length}\n┃𝚃𝙸𝙼𝙴: ${timeString}⏰\n╰━━━━━━━━━━━━━━━╯\n\n*@${user}* Welcome to *${groupName}*! 🎉\n*Group 𝙳𝙴𝚂𝙲𝚁𝙸𝙿𝚃𝙸𝙾𝙽*\n${groupDesc}\n\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ Knight Bot*`;
+            const welcomeMessage = `╔════════════════════════╗
+⚡  UMAROCK BOT  ⚡
+╚════════════════════════╝
+
+Welcome @${user} to ${groupName}!
+Built by: Umar Butt — Full-stack Developer
+Use .help to see commands.
+
+Member count: #${groupMetadata.participants.length}
+Time: ${timeString}`;
             await sock.sendMessage(id, {
                 text: welcomeMessage,
                 mentions: [participant],
